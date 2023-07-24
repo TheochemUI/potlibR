@@ -1,0 +1,11 @@
+Package: potlibR
+Type: Package
+Title: Bindings to the potlib library
+Version: 1.0
+Date: 2023-07-24
+Author: Rohit Goswami
+Maintainer: Rohit Goswami <rog32@hi.is>
+Description: A package meant to interface with a variety of potentials including those of eON
+License: MIT
+Imports: Rcpp (>= 1.0.11), RcppEigen
+LinkingTo: Rcpp, RcppEigen
