@@ -4,9 +4,10 @@
 #include "../subprojects/potlib/CppCore/src/CuH2/CuH2Pot.hpp"
 using namespace cpp11;
 namespace writable = cpp11::writable;
+using namespace cpp11::literals;
 
 //' @export
-[[cpp11::register]] cpp11::writable::doubles cuh2pot(cpp11::data_frame df) {
+[[cpp11::register]] cpp11::writable::list cuh2pot_list(cpp11::data_frame df) {
   // Extract data from dataframe
   std::vector<double> x = cpp11::as_cpp<std::vector<double>>(df["x"]);
   std::vector<double> y = cpp11::as_cpp<std::vector<double>>(df["y"]);
@@ -31,6 +32,20 @@ namespace writable = cpp11::writable;
   auto cuh2pot = rgpot::CuH2Pot();
   auto [energy, forces] = cuh2pot(positions, atmtypes, box);
 
-  // For now, let's just return the energy as a single element vector.
-  return cpp11::writable::doubles({energy});
+  // Extract forces into separate vectors
+  cpp11::writable::doubles_matrix<cpp11::by_row> xmat(atmNum.size(), 3);
+  std::vector<double> force_x(forces.rows());
+  std::vector<double> force_y(forces.rows());
+  std::vector<double> force_z(forces.rows());
+  for(int i = 0; i < forces.rows(); i++) {
+    xmat(i, 0) = forces(i, 0);
+    xmat(i, 1) = forces(i, 1);
+    xmat(i, 2) = forces(i, 2);
+  }
+
+  // Return a named List with the energy and forces Matrix
+  cpp11::writable::list result;
+  result.push_back("energy"_nm = cpp11::writable::doubles({energy}));
+  result.push_back("forces"_nm = xmat);
+  return result;
 }
