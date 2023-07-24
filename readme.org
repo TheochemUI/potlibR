@@ -1,0 +1,23 @@
+* About
+This is a companion repository to the [[https://github.com/TheochemUI/potlib][potlib]] project, containing ~R~ bindings.
+
+** Development
+*** Setup and Build
+#+begin_src bash
+micromamba create -f environment.yml
+micromamba activate readconr_dev
+RScript -e 'devtools::install(".")'
+#+end_src
+*** Local Linting
+A ~pre-commit~ job is setup on CI to enforce consistent styles, so it is best to
+set it up locally as well (using [[https://pypa.github.io/pipx][pipx]] for isolation):
+
+#+begin_src sh
+# Run before commiting
+pipx run pre-commit run --all-files
+# Or install the git hook to enforce this
+pipx run pre-commit install
+#+end_src
+
+* License
+MIT.
