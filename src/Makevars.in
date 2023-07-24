@@ -1,0 +1,9 @@
+CXX_STD = CXX17
+
+# On macOS, with conda, we need disable_availability
+# https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+PKG_CPPFLAGS = -I@INC_PATH@ -D_LIBCPP_DISABLE_AVAILABILITY
+PKG_LIBS = -L@RLIB_PATH@ -L@MESON_BDIR@ -lreadcon
+# PKG_LDFLAGS = -L@RLIB_PATH@
+# PKG_LDLIBS = -lreadcon -Wl,-rpath,@RLIB_PATH@
+# PKG_LIBS = @RLIB_PATH@/libreadcon@LIB_EXT@

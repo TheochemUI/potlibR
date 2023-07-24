@@ -5,7 +5,7 @@ This is a companion repository to the [[https://github.com/TheochemUI/potlib][po
 *** Setup and Build
 #+begin_src bash
 micromamba create -f environment.yml
-micromamba activate readconr_dev
+micromamba activate potlibR_dev
 RScript -e 'devtools::install(".")'
 #+end_src
 *** Local Linting
