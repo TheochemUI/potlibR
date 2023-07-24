@@ -13,9 +13,10 @@ dependencies:
   - ninja
   - cmake
   - pkg-config
+  - r-cpp11
   # For the R bindings
-  - r-rcpp
-  - r-rcppeigen
+  # - r-rcpp
+  # - r-rcppeigen
   - r-devtools
   # For linting
   - r-styler

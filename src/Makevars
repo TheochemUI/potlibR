@@ -1,0 +1,9 @@
+CXX_STD = CXX17
+
+# On macOS, with conda, we need disable_availability
+# https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+PKG_CPPFLAGS = -I/Users/rgoswami/Git/Github/Theochem/potlibR/subprojects/potlib/CppCore -D_LIBCPP_DISABLE_AVAILABILITY -I/Users/rgoswami/micromamba/envs/potlibR_dev/include/eigen3
+# PKG_LIBS = -L/Users/rgoswami/micromamba/envs/potlibR_dev/lib/R/lib -L/Users/rgoswami/Git/Github/Theochem/potlibR/bbdir/subprojects/potlib/CppCore
+# PKG_LDFLAGS = -L/Users/rgoswami/micromamba/envs/potlibR_dev/lib/R/lib
+# PKG_LDLIBS = -lreadcon -Wl,-rpath,/Users/rgoswami/micromamba/envs/potlibR_dev/lib/R/lib
+# PKG_LIBS = /Users/rgoswami/micromamba/envs/potlibR_dev/lib/R/lib/libreadcon.dylib
