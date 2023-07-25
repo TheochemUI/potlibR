@@ -4,8 +4,9 @@ project('potlibR', 'cpp',
                      'cpp_std=c++17',
                      'wrap_mode=default'])
 
-# Get the library
+# Get the libraries
 subproject('potlib')
+subproject('readcon')
 # -------------------- Path Helpers
 
 pkg_config = configuration_data()
@@ -19,11 +20,11 @@ else
   pkg_config.set('LIB_EXT', '.so')
 endif
 pkg_config.set('RLIB_PATH', join_paths(r_home, 'lib'))
-pkg_config.set('MESON_BDIR', join_paths(meson.current_build_dir(),
-                                        'subprojects', 'potlib', 'CppCore'))
-pkg_config.set('INC_PATH', join_paths(meson.current_source_dir(),
-                                     'subprojects', 'potlib',
-                                     'CppCore'))
+# Get Eigen dep
+eigen_cmd = run_command('pkg-config', '--cflags', 'eigen3')
+eigen_dir = eigen_cmd.stdout().strip()
+message(eigen_dir)
+pkg_config.set('EIGEN_INC', eigen_dir)
 # Generate Makevars from the template
 configure_file(input : 'src/Makevars.in',
                output : 'Makevars',
