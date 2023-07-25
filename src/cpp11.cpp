@@ -6,16 +6,16 @@
 #include <R_ext/Visibility.h>
 
 // code.cpp
-cpp11::writable::doubles cuh2pot(cpp11::data_frame df);
-extern "C" SEXP _potlibR_cuh2pot(SEXP df) {
+writable::list cuh2pot_list(writable::data_frame df);
+extern "C" SEXP _potlibR_cuh2pot_list(SEXP df) {
   BEGIN_CPP11
-    return cpp11::as_sexp(cuh2pot(cpp11::as_cpp<cpp11::decay_t<cpp11::data_frame>>(df)));
+    return cpp11::as_sexp(cuh2pot_list(cpp11::as_cpp<cpp11::decay_t<writable::data_frame>>(df)));
   END_CPP11
 }
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_potlibR_cuh2pot", (DL_FUNC) &_potlibR_cuh2pot, 1},
+    {"_potlibR_cuh2pot_list", (DL_FUNC) &_potlibR_cuh2pot_list, 1},
     {NULL, NULL, 0}
 };
 }
