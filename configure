@@ -1,10 +1,9 @@
-# export R_ROOT=$(Rscript -e 'R.home()' | sed -e 's/^\[1\] "//' -e 's/"$//')
-
-meson setup bbdir --prefix ${CONDA_PREFIX}
+export R_ROOT=$(Rscript -e 'R.home()' | sed -e 's/^\[1\] "//' -e 's/"$//')
+meson setup bbdir --prefix ${R_ROOT} --wipe
 meson compile -C bbdir
-# meson install -C bbdir
+meson install -C bbdir
 
-cp -f "bbdir/Makevars" "src/Makevars"
+cp -f "$(pwd)/bbdir/Makevars" "$(pwd)/src/Makevars"
 
 # Emacs Stuff (cross platform)
 # Local Variables:

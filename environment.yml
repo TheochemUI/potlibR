@@ -13,10 +13,16 @@ dependencies:
   - ninja
   - cmake
   - pkg-config
-  - r-cpp11
+  # Potlib dep
+  - openblas
+  - gfortran
+  # (pinned)
+  - eigen==3.4.0
+  # (libs)
+  - fmt
+  - spdlog
   # For the R bindings
-  # - r-rcpp
-  # - r-rcppeigen
+  - r-cpp11
   - r-devtools
   # For linting
   - r-styler
