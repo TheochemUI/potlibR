@@ -11,6 +11,7 @@ using namespace cpp11;
   std::vector<double> x = cpp11::as_cpp<std::vector<double>>(df["x"]);
   std::vector<double> y = cpp11::as_cpp<std::vector<double>>(df["y"]);
   std::vector<double> z = cpp11::as_cpp<std::vector<double>>(df["z"]);
+  cpp11::writable::logicals isfixed = df["is_fixed"];
 
   cpp11::doubles atmNum = df["atmNum"];
   Eigen::VectorXi atmtypes(atmNum.size());
@@ -37,10 +38,16 @@ using namespace cpp11;
   // Prepare forces output matrix
   cpp11::writable::doubles_matrix<cpp11::by_row> forces_matrix(forces.rows(),
                                                                3);
-  for (int i = 0; i < forces.rows(); ++i) {
-    forces_matrix(i, 0) = forces(i, 0);
-    forces_matrix(i, 1) = forces(i, 1);
-    forces_matrix(i, 2) = forces(i, 2);
+  for (size_t idx{0}; idx < forces.rows(); ++idx) {
+    if (!(isfixed[idx] == true)) {
+      forces_matrix(idx, 0) = forces(idx, 0);
+      forces_matrix(idx, 1) = forces(idx, 1);
+      forces_matrix(idx, 2) = forces(idx, 2);
+    } else {
+      forces_matrix(idx, 0) = 0;
+      forces_matrix(idx, 1) = 0;
+      forces_matrix(idx, 2) = 0;
+    }
   }
 
   // Return a named List with the energy and forces Matrix
