@@ -23,23 +23,23 @@ NULL
 #' @export
 #'
 #' @examples
- \dontrun{
- # Create a dataframe with 10 atoms
- dfx <- data.frame(
-   x = runif(10), # x coordinates
-   y = runif(10), # y coordinates
-   z = runif(10), # z coordinates
-   atmNum = sample(c(1, 29), 10, replace = TRUE), # Atom numbers (1 for hydrogen, 29 for copper)
-   is_fixed = sample(c(TRUE, FALSE), 10, replace = TRUE) # Optional: whether each atom is fixed
- )
-
- # Compute energy and forces, considering 'is_fixed' column
- result <- cuh2pot_list(dfx, hasFixedCol = TRUE)
-
- # Compute energy and forces, ignoring 'is_fixed' column
- # This will give a warning because 'is_fixed' column is present in the dataframe
- result <- cuh2pot_list(dfx, hasFixedCol = FALSE)
- }
+#' \dontrun{
+#' # Create a dataframe with 10 atoms
+#' dfx <- data.frame(
+#'   x = runif(10), # x coordinates
+#'   y = runif(10), # y coordinates
+#'   z = runif(10), # z coordinates
+#'   atmNum = sample(c(1, 29), 10, replace = TRUE), # Atom numbers (1 for hydrogen, 29 for copper)
+#'   is_fixed = sample(c(TRUE, FALSE), 10, replace = TRUE) # Optional: whether each atom is fixed
+#' )
+#'
+#' # Compute energy and forces, considering 'is_fixed' column
+#' result <- cuh2pot_list(dfx, hasFixedCol = TRUE)
+#'
+#' # Compute energy and forces, ignoring 'is_fixed' column
+#' # This will give a warning because 'is_fixed' column is present in the dataframe
+#' result <- cuh2pot_list(dfx, hasFixedCol = FALSE)
+#' }
 cuh2pot_list <- function(df, hasFixedCol = TRUE) {
   if (hasFixedCol) {
     # If 'is_fixed' should be present in the dataframe, but is not
