@@ -3,6 +3,9 @@
 # These are generated
 /subprojects/*
 Makevars
+cpp11.R
+cpp11.cpp
+*.tmp
 
 # Created by https://www.toptal.com/developers/gitignore/api/r
 # Edit at https://www.toptal.com/developers/gitignore?templates=r
