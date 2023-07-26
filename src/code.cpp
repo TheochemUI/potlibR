@@ -5,13 +5,18 @@
 using namespace cpp11::literals;
 using namespace cpp11;
 
+// Constant for now
+const Eigen::Matrix3d BOX{{15.345599999999999, 0, 0},
+                          {0, 21.702000000000002, 0},
+                          {0, 0, 100.00000000000000}};
+
 //' @export
-[[cpp11::register]] writable::list cuh2pot_list(writable::data_frame df) {
+[[cpp11::register]] writable::list cuh2pot_list(writable::data_frame df,
+                                                bool a_isFixed = false) {
   // Extract data from dataframe
   std::vector<double> x = cpp11::as_cpp<std::vector<double>>(df["x"]);
   std::vector<double> y = cpp11::as_cpp<std::vector<double>>(df["y"]);
   std::vector<double> z = cpp11::as_cpp<std::vector<double>>(df["z"]);
-  cpp11::writable::logicals isfixed = df["is_fixed"];
 
   cpp11::doubles atmNum = df["atmNum"];
   Eigen::VectorXi atmtypes(atmNum.size());
@@ -26,27 +31,31 @@ using namespace cpp11;
   rgpot::AtomMatrix positions =
       Eigen::Map<rgpot::AtomMatrix>(coords.data(), x.size(), 3);
 
-  // Define box (assuming it's constant for now)
-  Eigen::Matrix3d box{{15.345599999999999, 0, 0},
-                      {0, 21.702000000000002, 0},
-                      {0, 0, 100.00000000000000}};
-
   // Compute the energy and forces
   auto cuh2pot = rgpot::CuH2Pot();
-  auto [energy, forces] = cuh2pot(positions, atmtypes, box);
+  auto [energy, forces] = cuh2pot(positions, atmtypes, BOX);
 
   // Prepare forces output matrix
   cpp11::writable::doubles_matrix<cpp11::by_row> forces_matrix(forces.rows(),
                                                                3);
-  for (size_t idx{0}; idx < forces.rows(); ++idx) {
-    if (!(isfixed[idx] == true)) {
+  if (a_isFixed) {
+    cpp11::writable::logicals isfixed = df["is_fixed"];
+    for (size_t idx{0}; idx < forces.rows(); ++idx) {
+      if (!(isfixed[idx] == true)) {
+        forces_matrix(idx, 0) = forces(idx, 0);
+        forces_matrix(idx, 1) = forces(idx, 1);
+        forces_matrix(idx, 2) = forces(idx, 2);
+      } else {
+        forces_matrix(idx, 0) = 0;
+        forces_matrix(idx, 1) = 0;
+        forces_matrix(idx, 2) = 0;
+      }
+    }
+  } else {
+    for (size_t idx{0}; idx < forces.rows(); ++idx) {
       forces_matrix(idx, 0) = forces(idx, 0);
       forces_matrix(idx, 1) = forces(idx, 1);
       forces_matrix(idx, 2) = forces(idx, 2);
-    } else {
-      forces_matrix(idx, 0) = 0;
-      forces_matrix(idx, 1) = 0;
-      forces_matrix(idx, 2) = 0;
     }
   }
 
